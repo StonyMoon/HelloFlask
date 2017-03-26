@@ -6,15 +6,16 @@ from .forms import LoginForm, RegisterForm
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from ..email import send_mail
+from ..models import Post
 
-
-@auth.before_app_request
-def before_request():
-    if current_user.is_authenticated \
-            and not current_user.confirmed \
-            and request.endpoint[:5] != 'auth.' \
-            and request.endpoint != 'static':
-        return redirect(url_for('auth.unconfirmed'))
+#未验证账户禁止访问,暂时关闭此功能
+# @auth.before_app_request
+# def before_request():
+#     if current_user.is_authenticated \
+#             and not current_user.confirmed \
+#             and request.endpoint[:5] != 'auth.' \
+#             and request.endpoint != 'static':
+#         return redirect(url_for('auth.unconfirmed'))
 
 
 @auth.route('/unconfirmed')
@@ -96,7 +97,4 @@ def con(token):
         return redirect(url_for('main.hello_world'))
     return redirect(url_for('main.hello_world'))
 
-@auth.route('/database')
-def create_database():
-    db.create_all()
-    models.Role.insert_role()
+

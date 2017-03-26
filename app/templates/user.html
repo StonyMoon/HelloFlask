@@ -2,6 +2,29 @@
 {% block content %}
     <h1>hello,{{ user.name }}</h1>
     <p>email:{{ user.email }}</p>
-{#    <p>about me {{ user.about_me }}</p>#}
+    <div class="well well-sm">
+        {{ user.location }}
+    </div>
+    <div class="well well-lg">
+        {{ user.about_me }}
+    </div>
+    {% for post in posts %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <div class="span8">
+                        {{ post.author.name }}
+                    </div>
+                    <div class="span4">
+                        {{ moment(post.timestamp).fromNow() }}
+                    </div>
+                </h3>
+            </div>
+            <div class="panel-body">
+                {{ post.body }}
+            </div>
+        </div>
+    {% endfor %}
+
 
 {% endblock %}

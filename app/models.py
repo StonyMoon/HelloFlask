@@ -5,6 +5,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import login_manager
 from flask_login import UserMixin, AnonymousUserMixin
 from flask_moment import datetime
+from markdown import markdown
+import bleach
 
 class Permission:
     FOLLOW = 0x01
@@ -62,18 +64,16 @@ class User(UserMixin, db.Model):
                 self.role = Role.query.filter_by(default=True).first()
 
     __tablename__ = 'users'
-    confirmed = db.Column(db.Boolean, default=False)
     id = db.Column(db.Integer, primary_key=True)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))  # what it is?TODO
+    confirmed = db.Column(db.Boolean, default=False)
     name = db.Column(db.String(64), unique=True, index=True)
     email = db.Column(db.String(64), unique=True)
     password = db.Column(db.String(128))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text)
-    posts = db.relationship('Post',backref='author',lazy='dynamic')
-    
-
-
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))  # what it is?TODO
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    comments = db.relationship('Comment', backref='author', lazy='dynamic')
 
     def generate_confirmation_token(self, expiration=3600):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
@@ -98,21 +98,59 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password, password)
 
+    @staticmethod
+    def generate_fake(self,f,t):#生成从f到t的用户
+        for i in range (f,t):
+            user = User(name=str(i),password='123',email=str(i),confirmed=True)
+            db.session.add(user)
+        db.session.commit()
+
     def __repr__(self):
         return 'User %r' % self.name
 
-
 class AnonymousUser(AnonymousUserMixin):
-    def can(self,Permission):
+    def can(self, Permission):
         return False
 
-    def is_adminstration(self):
+    def is_administrator(self):
         return False
 
 class Post(db.Model):
     __tablename__ = 'posts'
-    id = db.Column(db.Integer,primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime,index=True,default=datetime.utcnow())
-    author_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow())
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # 相当于在post里有一个.user可以直接拿到User
+    body_html = db.Column(db.Text)
+    comments = db.relationship('Comment', backref='comments', lazy='dynamic')
 
+    @staticmethod
+    def generate_fake(num):
+        for i in range(0, num):
+            post=Post(body=str(num),author_id=1)
+            db.session.add(post)
+        db.session.commit()
+
+    @staticmethod
+    def on_change_body(target,value,oldvalue,initiator):
+        allowed_tags = ['a','abbr','acronym','b','blockquote','code','em','i','li','ol','pre','strong'
+                        ,'ul','h1','h2','h3','p','img']
+        target.body_html = bleach.linkify(bleach.clean(markdown(value,output_format='html'),tags=allowed_tags,strip=True))
+db.event.listen(Post.body,'set',Post.on_change_body)
+
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer,db.ForeignKey('posts.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # 相当于在post里有一个.user可以直接拿到User
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow())
+    body_html = db.Column(db.Text)
+    @staticmethod
+    def on_change_body(target,value,oldvalue,initiator):
+        allowed_tags = ['a','abbr','acronym','b','blockquote','code','em','i','li','ol','pre','strong'
+                        ,'ul','h1','h2','h3','p','img']
+        target.body_html = bleach.linkify(bleach.clean(markdown(value,output_format='html'),tags=allowed_tags,strip=True))
+
+#db.event.listen(Comment.body,'set',Comment.on_change_body)

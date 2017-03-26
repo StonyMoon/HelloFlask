@@ -1,28 +1,63 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% block scripts %}
+    {{ super() }}
+    {{ pagedown.include_pagedown() }}
+{% endblock %}
+
 {% block content %}
-<div class="page-header">
-	<div class="Container">
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ message }}
+    <div class="page-header">
+        <div class="Container">
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% block page_content %}{% endblock %}
+        </div>
     </div>
-    {% endfor %}
-    {% block page_content %}{% endblock %}
-</div>
-</div>
 
-	{{wtf.quick_form(form)}}
+    {{ wtf.quick_form(form) }}
     {% for post in posts %}
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 class="panel-title">Panel primary</h3>
-  </div>
-  <div class="panel-body">
-    {{post.body}}
-  </div>
-</div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <div class="span8">
+                        {{ post.author.name }}
+                    </div>
+                    <div class="span4">
+                        <a href = '{{ url_for("main.post",id=post.id) }}'>{{ moment(post.timestamp).fromNow() }}</a>
+                    </div>
+                </h3>
+            </div>
+            <div class="panel-body">
+                {% if post.body_html %}
+                    {{ post.body_html |safe }}
+                {% else %}
+                    {{ post.body }}
+                {% endif %}
+            {% if current_user.id == post.author.id or current_user.is_administrator()%}
+            <a href='{{ url_for('main.edit',id=post.id) }}' class="btn btn-success">Edit</a>
+            {% endif %}
+            </div>
+        </div>
     {% endfor %}
 
+    <ul class="pagination">
+        {% if pagination.page== 1 %}
+            <li class="disabled"><a href="#">&laquo;</a></li>
+        {% else %}
+            <li><a href='{{ url_for('main.hello_world',page= pagination.prev_num) }}'>&laquo;</a></li>
+        {% endif %}
+        {% for i in range(pagination.pages) %}
+            <li><a href="{{ url_for('main.hello_world',page=i+1 )}}"> {{ i+1 }} </a></li>
+        {% endfor %}
+        {% if pagination.page== pagination.pages %}
+
+            <li class="disabled"><a href="#">&raquo;</a></li>
+        {% else %}
+            <li><a href='{{ url_for('main.hello_world',page= pagination.next_num) }}'>&raquo;</a></li>
+        {% endif %}
+    </ul>
 {% endblock %}

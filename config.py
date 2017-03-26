@@ -8,6 +8,7 @@ class Config():
     MAIL_USERNAME = '934998206@qq.com'
     MAIL_PASSWORD = 'dvskzmbhhzlnbfcd'
     FLASKY_ADMIN = '934998206@qq.com'
+    PAGE = 20
     @staticmethod
     def init_app(app):
         pass
