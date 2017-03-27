@@ -1,17 +1,19 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 {% block content %}
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                <div class="span8">
-                    {{ post.author.name }}
-                </div>
-                <div class="span4">
-                    {{ moment(post.timestamp).fromNow() }}
-                </div>
-            </h3>
-        </div>
+{% block scripts %}
+    {{ super() }}
+    {{ pagedown.include_pagedown() }}
+{% endblock %}
+    <div class="col-md-2 column">
+    </div>
+    <div class="col-md-5 column">
+        <h2>Head</h2>
+        <br/>
+        <p>{{ post.author.name }}
+                {% if current_user.id ==  post.author.id or current_user.is_administrator()%}
+            <a style ="float:right"href='{{ url_for('main.edit',id=post.id) }}' class="btn btn-success">Edit</a>
+            {% endif %}</p>
         <div class="panel-body">
             {% if post.body_html %}
                 {{ post.body_html |safe }}
@@ -19,18 +21,18 @@
                 {{ post.body }}
             {% endif %}
         </div>
-    </div>
-    {% for comment in comments %}
 
-        <div class="well">
-            {{ comment.body |safe }}
-                    {% if current_user.id == post.author.id or current_user.is_administrator()%}
-            <a href='{{ url_for('main.delete',id=comment.id) }}' class="btn btn-warning">Delete</a>
-            {% endif %}
-        </div>
+        {% for comment in comments %}
 
-    {% endfor %}
-    {{ wtf.quick_form(form) }}
+            <div class="well">
+                {{ comment.body |safe }}
+                {% if current_user.id == post.author.id or current_user.is_administrator() %}
+                    <a style="float:right" href='{{ url_for('main.delete',id=comment.id) }}' class="btn btn-warning">Delete</a>
+                {% endif %}
+            </div>
 
+        {% endfor %}
+        {{ wtf.quick_form(form) }}
+        <div>
 
 {% endblock %}

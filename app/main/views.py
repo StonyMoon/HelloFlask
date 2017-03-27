@@ -37,7 +37,7 @@ def hello_world():
     pagination = Post.query.order_by(Post.timestamp.desc()).paginate(page,per_page=20,error_out=False)
     #拿到一页内容
     posts = pagination.items
-    return render_template('index.html' , form=form , posts = posts,pagination = pagination)
+    return render_template('aa.html' , form=form , posts = posts,pagination = pagination)
 
 @main.route('/mail',methods=['POST','GET'])
 def mail_sender():

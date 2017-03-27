@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+#注意这个是自动渲染markdown语法用的
 {% block scripts %}
     {{ super() }}
     {{ pagedown.include_pagedown() }}
 {% endblock %}
-
+{{ moment(post.timestamp).lang('cn') }}
 {% block content %}
     <div class="page-header">
         <div class="Container">
@@ -27,7 +28,7 @@
                         {{ post.author.name }}
                     </div>
                     <div class="span4">
-                        <a href = '{{ url_for("main.post",id=post.id) }}'>{{ moment(post.timestamp).fromNow() }}</a>
+                        {{ moment(post.timestamp).fromNow(refresh=True) }}
                     </div>
                 </h3>
             </div>
@@ -37,7 +38,7 @@
                 {% else %}
                     {{ post.body }}
                 {% endif %}
-            {% if current_user.id == post.author.id or current_user.is_administrator()%}
+            {% if current_user.id ==  post.author.id or current_user.is_administrator()%}
             <a href='{{ url_for('main.edit',id=post.id) }}' class="btn btn-success">Edit</a>
             {% endif %}
             </div>
