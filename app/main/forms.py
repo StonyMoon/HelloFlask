@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import StringField,SubmitField , TextAreaField,PasswordField ,BooleanField
+from wtforms import StringField,SubmitField , TextAreaField,PasswordField ,BooleanField,SelectField
 from wtforms.validators import DataRequired,Email
 from flask_pagedown.fields import PageDownField#和表格一样用就好
 class NameForm(Form):
@@ -13,7 +13,10 @@ class mail_form(Form):
     submit = SubmitField('Submit')
 
 class PostForm(Form):
+    choice = [('随笔', '随笔'), ('读书笔记', '读书笔记'), ('翻译', '翻译')]
+    title = StringField('title',validators=[DataRequired])
     body = PageDownField('What \'s your mind?',validators=[DataRequired])
+    post_type = SelectField('type',choices=choice)
     submit = SubmitField('Submit')
 
 class EditProfileForm(Form):

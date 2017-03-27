@@ -29,12 +29,13 @@ def hello_world():
     page = request.args.get('page',1,type=int)#无参数则默认为1,type作用:参数无法转为int时则默认为1
     form = PostForm()
     if form.is_submitted() and current_user.can(Permission.WRITE_ARTICLES):
-        post = Post(body=form.body.data,author_id=current_user.id)
+        print(form.post_type.data)
+        post = Post(body=form.body.data,author_id=current_user.id,title=form.title.data,type=form.post_type.data)
         db.session.add(post)
         db.session.commit()
         return redirect('http://127.0.0.1:5000/')
     #分页
-    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(page,per_page=20,error_out=False)
+    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(page,per_page=10,error_out=False)
     #拿到一页内容
     posts = pagination.items
     return render_template('aa.html' , form=form , posts = posts,pagination = pagination)
@@ -48,8 +49,6 @@ def mail_sender():
         return redirect(url_for('main.mail_sender'))#注意一下此处的转跳地址
 
     return render_template('mail.html',form = form)
-
-
 
 
 @main.route('/delete/<id>')
@@ -86,6 +85,7 @@ def post(id):
     post = Post.query.get_or_404(id)
     comments = post.comments.order_by(Comment.timestamp.desc()).all()
     if form.is_submitted():
+        print(form.post_type.data)
         comment = Comment(post_id=id,author_id=current_user.id,body=form.body.data)
         db.session.add(comment)
         db.session.commit()
@@ -101,9 +101,26 @@ def edit(id):
         abort(404)
     if form.is_submitted():
         post.body = form.body.data
+        post.title = form.title.data
+        post.type = form.post_type.data
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('main.hello_world'))
     form.body.data = post.body
+    form.title.data = post.title
     return render_template('edit.html',post=post,form=form)
 
+@main.route('/type/<type>')
+def select(type):
+    page = request.args.get('page',1,type=int)#无参数则默认为1,type作用:参数无法转为int时则默认为1
+    form = PostForm()
+    if form.is_submitted() and current_user.can(Permission.WRITE_ARTICLES):
+        post = Post(body=form.body.data,author_id=current_user.id,title=form.title.data,type=form.post_type.data)
+        db.session.add(post)
+        db.session.commit()
+        return redirect('http://127.0.0.1:5000/')
+    #分页
+    pagination = Post.query.filter_by(type=type).order_by(Post.timestamp.desc()).paginate(page,per_page=10,error_out=False)
+    #拿到一页内容
+    posts = pagination.items
+    return render_template('aa.html' , form=form , posts = posts,pagination = pagination)

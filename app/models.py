@@ -119,6 +119,8 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
+    title = db.Column(db.String(64))
+    type = db.Column(db.String(64))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow())
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # 相当于在post里有一个.user可以直接拿到User
     body_html = db.Column(db.Text)

@@ -8,8 +8,9 @@
     <div class="col-md-2 column">
     </div>
     <div class="col-md-5 column">
-        <h2>Head</h2>
-        <br/>
+        <h2>{{ post.title }}</h2>
+        <hr/>
+
         <p>{{ post.author.name }}
                 {% if current_user.id ==  post.author.id or current_user.is_administrator()%}
             <a style ="float:right"href='{{ url_for('main.edit',id=post.id) }}' class="btn btn-success">Edit</a>
@@ -21,7 +22,8 @@
                 {{ post.body }}
             {% endif %}
         </div>
-
+<hr>
+    <h2>Comments</h2>
         {% for comment in comments %}
 
             <div class="well">
