@@ -1,3 +1,4 @@
+#coding:utf8
 from flask_mail import  Message
 from flask import redirect,render_template,url_for
 from app import mail

@@ -1,3 +1,4 @@
+#coding:utf8
 from . import auth
 from flask import render_template, flash, session, redirect, url_for, request
 from .. import models, login_manager, db

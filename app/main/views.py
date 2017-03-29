@@ -1,3 +1,4 @@
+#coding:utf8
 from . import main
 from flask import Flask, redirect, make_response, request, abort, render_template, url_for, session, flash
 from .forms import PostForm, mail_form, EditProfileForm, CommentForm
@@ -15,7 +16,6 @@ def create_database():
     models.Role.insert_role()
     # Post.generate_fake(50)
 
-
 @main.route('/index', methods=['POST', 'GET'])
 def send_mail(to, title, mes):
     msg = Message(title, sender='934998206@qq.com', recipients=[to])
@@ -24,7 +24,6 @@ def send_mail(to, title, mes):
 
 
 @main.route('/', methods=['POST', 'GET'])
-@login_required
 def hello_world():
     page = request.args.get('page', 1, type=int)  # 无参数则默认为1,type作用:参数无法转为int时则默认为1
     form = PostForm()
@@ -32,7 +31,7 @@ def hello_world():
         post = Post(body=form.body.data, author_id=current_user.id, title=form.title.data, type=form.post_type.data)
         db.session.add(post)
         db.session.commit()
-        return redirect('http://127.0.0.1:5000/')
+        return redirect(url_for('main.hello_world'))
     # 分页
     pagination = Post.query.order_by(Post.timestamp.desc()).paginate(page, per_page=10, error_out=False)
     # 拿到一页内容

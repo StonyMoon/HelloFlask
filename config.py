@@ -1,3 +1,4 @@
+#coding:utf8
 class Config():
     SECRET_KEY = 'ZXNMCBZXMNCBMNZXB'
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@127.0.0.1/test'
