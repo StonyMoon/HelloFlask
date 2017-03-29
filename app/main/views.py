@@ -33,7 +33,7 @@ def hello_world():
         db.session.commit()
         return redirect(url_for('main.hello_world'))
     # 分页
-    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(page, per_page=10, error_out=False)
+    pagination = Post.query.order_by(Post.id.desc()).paginate(page, per_page=10, error_out=False)
     # 拿到一页内容
     posts = pagination.items
     return render_template('aa.html', form=form, posts=posts, pagination=pagination)
@@ -65,7 +65,7 @@ def user(username):
     user = User.query.filter_by(name=username).first()
     if user is None:
         abort(404)
-    posts = user.posts.order_by(Post.timestamp.desc()).all()
+    posts = user.posts.order_by(Post.id.desc()).all()
     return render_template('user.html', user=user, posts=posts)
 
 
@@ -85,7 +85,7 @@ def edit_profile():
 def post(id):
     form = CommentForm()
     post = Post.query.get_or_404(id)
-    comments = post.comments.order_by(Comment.timestamp.desc()).all()
+    comments = post.comments.order_by(Comment.id.desc()).all()
     if form.is_submitted():
         comment = Comment(post_id=id, author_id=current_user.id, body=form.body.data)
         db.session.add(comment)
@@ -123,7 +123,7 @@ def select(type):
         db.session.commit()
         return redirect('http://127.0.0.1:5000/')
     # 分页
-    pagination = Post.query.filter_by(type=type).order_by(Post.timestamp.desc()).paginate(page, per_page=10,
+    pagination = Post.query.filter_by(type=type).order_by(Post.id.desc()).paginate(page, per_page=10,
                                                                                           error_out=False)
     # 拿到一页内容
     posts = pagination.items

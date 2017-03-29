@@ -30,7 +30,7 @@
                     </h2>
                     <div style="float:right" class="panel-body" >
                     <img  src="{{ url_for('static',filename='clock.png') }} " width="18" height="18"/>
-                    {{ moment(post.timestamp).format('YYYY年M月D日, h:mm:ss a') }}
+                    {{ post.timestamp }}
 <br/>
                     <img  src="{{ url_for('static',filename='folder.png') }} " width="18" height="18"/>
                     {{ post.type }}
