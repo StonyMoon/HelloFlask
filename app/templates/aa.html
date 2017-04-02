@@ -5,12 +5,13 @@
     {{ super() }}
     {{ pagedown.include_pagedown() }}
 {% endblock %}
-{#{% block navbar %}#}
-{#{{ super() }}#}
-{#    <img  src="{{ url_for('static',filename='t.png') }} " width="100%" height="18"/>#}
-{#{% endblock %}#}
+{% block navbar %}
+{{ super() }}
+
+{% endblock %}
 
 {% block content %}
+
 </br>
 </br>
 </br>
@@ -23,11 +24,11 @@
                 {% for post in posts %}
                     <hr>
 <div>
-                    <h2>
+                    <h3>
                         <a style=" text-decoration: none; color: inherit;" href='{{ url_for("main.post",id=post.id) }}'>
                             {{ post.title }}
                         </a>
-                    </h2>
+                    </h3>
                     <div style="float:right" class="panel-body" >
                     <img  src="{{ url_for('static',filename='clock.png') }} " width="18" height="18"/>
                     {{ post.timestamp }}
@@ -72,7 +73,7 @@
                             </div>
                             <div id="panel-element-802710" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                    None
+                                    等我什么时候有心情了再写吧
                                 </div>
                             </div>
                         </div>
