@@ -1,6 +1,7 @@
 {% extends "bootstrap/base.html" %}
 <link href="/css/bootstrap.css" rel="stylesheet" media="screen">
 {% block title %}Jimi's Blog{% endblock %}
+
 {% block script %}
     {{ super() }}
     {{ moment.include_moment() }}
@@ -8,6 +9,7 @@
 {% endblock %}
 
 {% block navbar %}
+
     <div class="navbar navbar-inverse" role="navigation">
         <div class="container">
             <div class="navbar-header">

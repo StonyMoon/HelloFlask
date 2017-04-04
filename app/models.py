@@ -10,7 +10,7 @@ from flask_login import UserMixin, AnonymousUserMixin
 from flask_moment import datetime
 from markdown import markdown
 import bleach
-
+from mdx_gfm import GithubFlavoredMarkdownExtension
 class Permission:
     FOLLOW = 0x01
     COMMMENT = 0x02
@@ -140,7 +140,7 @@ class Post(db.Model):
     def on_change_body(target,value,oldvalue,initiator):
         # allowed_tags = ['a','abbr','acronym','b','blockquote','code','em','i','li','ol','pre','strong'
         #                 ,'ul','h1','h2','h3','p','img']
-        target.body_html = bleach.linkify(markdown(value,output_format='html'))
+        target.body_html = bleach.linkify(markdown(value,output_format='html',extensions=[GithubFlavoredMarkdownExtension()]))
 db.event.listen(Post.body,'set',Post.on_change_body)
 
 
