@@ -1,4 +1,5 @@
 #coding:utf8
+import time
 from . import main
 from flask import Flask, redirect, make_response, request, abort, render_template, url_for, session, flash
 from .forms import PostForm, mail_form, EditProfileForm, CommentForm
@@ -25,6 +26,11 @@ def send_mail(to, title, mes):
 
 @main.route('/', methods=['POST', 'GET'])
 def hello_world():
+    with open('log.txt','a') as f:
+        f.write(str(request.headers))
+        f.write(str(request.remote_addr))
+        f.write('\n')
+        f.write(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
     page = request.args.get('page', 1, type=int)  # 无参数则默认为1,type作用:参数无法转为int时则默认为1
     form = PostForm()
     if form.is_submitted() and current_user.can(Permission.WRITE_ARTICLES):

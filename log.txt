@@ -1,0 +1,23 @@
+Connection: keep-alive
+Content-Length: 
+Host: 127.0.0.1:5000
+Upgrade-Insecure-Requests: 1
+Cookie: session=eyJjc3JmX3Rva2VuIjoiMjc3YjJjNGVhODE4ZWJmMDA3MmI3MGIzNzc5NTE1ZWFiOTViZWY1YyJ9.C8oYdg.C1fZEz8j6uqGOfTu3V5BnPicfvg
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Content-Type: 
+Accept-Language: zh-CN,zh;q=0.8,ja;q=0.6,zh-TW;q=0.4
+Accept-Encoding: gzip, deflate, sdch
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36
+
+127.0.0.1time.struct_time(tm_year=2017, tm_mon=4, tm_mday=8, tm_hour=14, tm_min=45, tm_sec=45, tm_wday=5, tm_yday=98, tm_isdst=0)User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36
+Accept-Language: zh-CN,zh;q=0.8,ja;q=0.6,zh-TW;q=0.4
+Host: 127.0.0.1:5000
+Connection: keep-alive
+Accept-Encoding: gzip, deflate, sdch
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Content-Length: 
+Cookie: session=eyJjc3JmX3Rva2VuIjoiMjc3YjJjNGVhODE4ZWJmMDA3MmI3MGIzNzc5NTE1ZWFiOTViZWY1YyJ9.C8oYmg.4w3A49t1VHMqCI36RTf0HKIrGx8
+Content-Type: 
+Upgrade-Insecure-Requests: 1
+
+127.0.0.12017-04-08 14:48:53
