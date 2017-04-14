@@ -29,3 +29,6 @@ class CommentForm(Form):
     body = PageDownField('What \'s your mind?',validators=[DataRequired])
     submit = SubmitField('Submit')
 
+class TodoForm(Form):
+    task = TextAreaField('What to do?')
+    submit = SubmitField('Submit')

@@ -131,6 +131,20 @@
     CSAPP
   </li>
 </ul>
+    <hr>
+        <br>
+        <br>
+    <div class="panel panel-default">
+  <div class="panel-heading">Todo</div>
+
+
+ {% for each in todo%}
+       <div class="panel-body">
+    {{ each.body }}
+  </div>
+
+        {% endfor %}
+</div>
     </div>
 
 

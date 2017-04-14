@@ -7,6 +7,7 @@ from flask_login import LoginManager
 from config import Config
 from flask_moment import Moment
 from flask_pagedown import PageDown
+from flask_migrate import Migrate,MigrateCommand
 mail = Mail()
 bootstrap = Bootstrap()
 db = SQLAlchemy()
