@@ -156,3 +156,15 @@ def select(type):
     # 拿到一页内容
     posts = pagination.items
     return render_template('aa.html', form=form, posts=posts, pagination=pagination)
+
+
+
+@main.route('/search/<word>')
+def search(word):
+    page = request.args.get('page', 1, type=int)  # 无参数则默认为1,type作用:参数无法转为int时则默认为1
+    form = PostForm()
+    pagination = Post.query.filter(Post.title.like('%'+word+'%')).order_by(Post.id.desc()).paginate(page, per_page=10,
+                                                                                          error_out=False)
+    # 拿到一页内容
+    posts = pagination.items
+    return render_template('aa.html', form=form, posts=posts, pagination=pagination)
