@@ -1,46 +1,1260 @@
-<link type="text/css" rel="stylesheet" href={{url_for('static', filename="code.css")}}/>
-.pcss{font-family:"Microsoft YaHei";}
-{% extends "base.html" %}
+<link type="text/css" rel="stylesheet" href={{ url_for('static', filename="code.css") }}/>
+{#{% extends "base.html" %}#}
 {% import "bootstrap/wtf.html" as wtf %}
-{% block content %}
-{% block scripts %}
+{#{% block content %}#}
+{#    {% block scripts %}#}
+{#        {{ super() }}#}
+{#        {{ pagedown.include_pagedown() }}#}
+{#    {% endblock %}#}
+{##}
+{#{% endblock %}#}
+{#    <h2>Comments</h2>#}
+{#    {% for comment in comments %}#}
+{##}
+{#        <div class="well">#}
+{#            {{ comment.body |safe }}#}
+{#            {% if current_user.id == post.author.id or current_user.is_administrator() %}#}
+{#                <a style="float:right" href='{{ url_for('main.delete',id=comment.id) }}'#}
+{#                   class="btn btn-warning">Delete</a>#}
+{#            {% endif %}#}
+{#        </div>#}
+{##}
+{#    {% endfor %}#}
+{#    {{ wtf.quick_form(form) }}#}
 
-    {{ super() }}
-    {{ pagedown.include_pagedown() }}
-{% endblock %}
-    <div class="col-md-2 column">
-    </div>
-    <div class="col-md-7 column">
-        <h2>{{ post.title }}</h2>
-        <hr/>
 
-        <p>By:{{ post.author.name }}
-                {% if current_user.id ==  post.author.id or current_user.is_administrator()%}
-            <a style ="float:right"href='{{ url_for('main.edit',id=post.id) }}' class="btn btn-success">Edit</a>
-            {% endif %}</p>
-    <div class="pcss"
-         style="line-height:200%"
-        >
+{#{% endblock %}#}
 
-            {% if post.body_html %}
-                {{ post.body_html |safe }}
-            {% else %}
-                {{ post.body |safe}}
-            {% endif %}
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="zh-cmn-Hans">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--IE 8浏览器的页面渲染方式-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <!--默认使用极速内核：针对国内浏览器产商-->
+    <meta name="renderer" content="webkit">
+    <!--针对移动端的界面优化-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!--chrome Android 地址栏颜色-->
+    <meta name="theme-color" content="#3a3f51">
+    <title>Jimi's blog</title>
+    <style type="text/css">
+        .MathJax_ref {
+            text-decoration: underline !important;
+        }
+    </style>
+    <meta name="description" content="这里是宁月的博客">
+    <meta name="keywords" content="博客,技术,编程">
+    <meta name="generator" content="Typecho 1.0/14.10.10">
+    <meta name="template" content="handsome">
+
+
+    <!-- 第三方CDN加载CSS -->
+    <link href="../static/stony/bootstrap.min.css" rel="stylesheet">
+    <script async="" src="../static/stony/analytics.js"></script>
+    <script src="../static/stony/hm.js"></script>
+    <script src="../static/stony/jquery.min.js" data-no-instant=""></script>
+
+
+    <!-- 本地compass版本 -->
+    <link rel="stylesheet" href="../static/stony/appall.min.css" type="text/css">
+    <script src="../static/stony/OwO.min.js"></script>
+
+    <link href="../static/stony/lightgallery.min.css" rel="stylesheet">
+
+
+    <style type="text/css">
+        @media only screen and (max-width: 766px) {
+            .ymusic {
+                display: none
+            }
+        }
+
+        html.bg {
+            background: url('./bg.jpg') fixed;
+            background-size: cover;
+        }
+
+        /*自定义css代码输出位置*/
+    </style>
+
+    <!--网站统计代码-->
+    <script data-no-instant="" type="text/javascript">
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?d7337d6ec327297473fd64e3cc6c0818";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-97470309-1', 'auto');
+        ga('send', 'pageview');</script>
+
+    <style>#instantclick {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        pointer-events: none;
+        z-index: 2147483647;
+        transition: opacity .25s .1s
+    }
+
+    .instantclick-bar {
+        background: #29d;
+        width: 100%;
+        margin-left: -100%;
+        height: 2px;
+        transition: all .25s
+    }</style>
+    <style type="text/css">.MathJax_Hover_Frame {
+        border-radius: .25em;
+        -webkit-border-radius: .25em;
+        -moz-border-radius: .25em;
+        -khtml-border-radius: .25em;
+        box-shadow: 0px 0px 15px #83A;
+        -webkit-box-shadow: 0px 0px 15px #83A;
+        -moz-box-shadow: 0px 0px 15px #83A;
+        -khtml-box-shadow: 0px 0px 15px #83A;
+        border: 1px solid #A6D ! important;
+        display: inline-block;
+        position: absolute
+    }
+
+    .MathJax_Menu_Button .MathJax_Hover_Arrow {
+        position: absolute;
+        cursor: pointer;
+        display: inline-block;
+        border: 2px solid #AAA;
+        border-radius: 4px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        -khtml-border-radius: 4px;
+        font-family: 'Courier New', Courier;
+        font-size: 9px;
+        color: #F0F0F0
+    }
+
+    .MathJax_Menu_Button .MathJax_Hover_Arrow span {
+        display: block;
+        background-color: #AAA;
+        border: 1px solid;
+        border-radius: 3px;
+        line-height: 0;
+        padding: 4px
+    }
+
+    .MathJax_Hover_Arrow:hover {
+        color: white !important;
+        border: 2px solid #CCC !important
+    }
+
+    .MathJax_Hover_Arrow:hover span {
+        background-color: #CCC !important
+    }
+    </style>
+    <style type="text/css">#MathJax_About {
+        position: fixed;
+        left: 50%;
+        width: auto;
+        text-align: center;
+        border: 3px outset;
+        padding: 1em 2em;
+        background-color: #DDDDDD;
+        color: black;
+        cursor: default;
+        font-family: message-box;
+        font-size: 120%;
+        font-style: normal;
+        text-indent: 0;
+        text-transform: none;
+        line-height: normal;
+        letter-spacing: normal;
+        word-spacing: normal;
+        word-wrap: normal;
+        white-space: nowrap;
+        float: none;
+        z-index: 201;
+        border-radius: 15px;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        -khtml-border-radius: 15px;
+        box-shadow: 0px 10px 20px #808080;
+        -webkit-box-shadow: 0px 10px 20px #808080;
+        -moz-box-shadow: 0px 10px 20px #808080;
+        -khtml-box-shadow: 0px 10px 20px #808080;
+        filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')
+    }
+
+    #MathJax_About.MathJax_MousePost {
+        outline: none
+    }
+
+    .MathJax_Menu {
+        position: absolute;
+        background-color: white;
+        color: black;
+        width: auto;
+        padding: 2px;
+        border: 1px solid #CCCCCC;
+        margin: 0;
+        cursor: default;
+        font: menu;
+        text-align: left;
+        text-indent: 0;
+        text-transform: none;
+        line-height: normal;
+        letter-spacing: normal;
+        word-spacing: normal;
+        word-wrap: normal;
+        white-space: nowrap;
+        float: none;
+        z-index: 201;
+        box-shadow: 0px 10px 20px #808080;
+        -webkit-box-shadow: 0px 10px 20px #808080;
+        -moz-box-shadow: 0px 10px 20px #808080;
+        -khtml-box-shadow: 0px 10px 20px #808080;
+        filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')
+    }
+
+    .MathJax_MenuItem {
+        padding: 2px 2em;
+        background: transparent
+    }
+
+    .MathJax_MenuArrow {
+        position: absolute;
+        right: .5em;
+        padding-top: .25em;
+        color: #666666;
+        font-size: .75em
+    }
+
+    .MathJax_MenuActive .MathJax_MenuArrow {
+        color: white
+    }
+
+    .MathJax_MenuArrow.RTL {
+        left: .5em;
+        right: auto
+    }
+
+    .MathJax_MenuCheck {
+        position: absolute;
+        left: .7em
+    }
+
+    .MathJax_MenuCheck.RTL {
+        right: .7em;
+        left: auto
+    }
+
+    .MathJax_MenuRadioCheck {
+        position: absolute;
+        left: 1em
+    }
+
+    .MathJax_MenuRadioCheck.RTL {
+        right: 1em;
+        left: auto
+    }
+
+    .MathJax_MenuLabel {
+        padding: 2px 2em 4px 1.33em;
+        font-style: italic
+    }
+
+    .MathJax_MenuRule {
+        border-top: 1px solid #CCCCCC;
+        margin: 4px 1px 0px
+    }
+
+    .MathJax_MenuDisabled {
+        color: GrayText
+    }
+
+    .MathJax_MenuActive {
+        background-color: Highlight;
+        color: HighlightText
+    }
+
+    .MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {
+        background-color: #E8E8E8
+    }
+
+    .MathJax_ContextMenu:focus {
+        outline: none
+    }
+
+    .MathJax_ContextMenu .MathJax_MenuItem:focus {
+        outline: none
+    }
+
+    #MathJax_AboutClose {
+        top: .2em;
+        right: .2em
+    }
+
+    .MathJax_Menu .MathJax_MenuClose {
+        top: -10px;
+        left: -10px
+    }
+
+    .MathJax_MenuClose {
+        position: absolute;
+        cursor: pointer;
+        display: inline-block;
+        border: 2px solid #AAA;
+        border-radius: 18px;
+        -webkit-border-radius: 18px;
+        -moz-border-radius: 18px;
+        -khtml-border-radius: 18px;
+        font-family: 'Courier New', Courier;
+        font-size: 24px;
+        color: #F0F0F0
+    }
+
+    .MathJax_MenuClose span {
+        display: block;
+        background-color: #AAA;
+        border: 1.5px solid;
+        border-radius: 18px;
+        -webkit-border-radius: 18px;
+        -moz-border-radius: 18px;
+        -khtml-border-radius: 18px;
+        line-height: 0;
+        padding: 8px 0 6px
+    }
+
+    .MathJax_MenuClose:hover {
+        color: white !important;
+        border: 2px solid #CCC !important
+    }
+
+    .MathJax_MenuClose:hover span {
+        background-color: #CCC !important
+    }
+
+    .MathJax_MenuClose:hover:focus {
+        outline: none
+    }
+    </style>
+    <style type="text/css">.MathJax_Preview .MJXf-math {
+        color: inherit !important
+    }
+    </style>
+    <style type="text/css">.MJX_Assistive_MathML {
+        position: absolute !important;
+        top: 0;
+        left: 0;
+        clip: rect(1px, 1px, 1px, 1px);
+        padding: 1px 0 0 0 !important;
+        border: 0 !important;
+        height: 1px !important;
+        width: 1px !important;
+        overflow: hidden !important;
+        display: block !important;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none
+    }
+
+    .MJX_Assistive_MathML.MJX_Assistive_MathML_Block {
+        width: 100% !important
+    }
+    </style>
+    <style type="text/css">#MathJax_Zoom {
+        position: absolute;
+        background-color: #F0F0F0;
+        overflow: auto;
+        display: block;
+        z-index: 301;
+        padding: .5em;
+        border: 1px solid black;
+        margin: 0;
+        font-weight: normal;
+        font-style: normal;
+        text-align: left;
+        text-indent: 0;
+        text-transform: none;
+        line-height: normal;
+        letter-spacing: normal;
+        word-spacing: normal;
+        word-wrap: normal;
+        white-space: nowrap;
+        float: none;
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+        box-shadow: 5px 5px 15px #AAAAAA;
+        -webkit-box-shadow: 5px 5px 15px #AAAAAA;
+        -moz-box-shadow: 5px 5px 15px #AAAAAA;
+        -khtml-box-shadow: 5px 5px 15px #AAAAAA;
+        filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')
+    }
+
+    #MathJax_ZoomOverlay {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 300;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        background-color: white;
+        opacity: 0;
+        filter: alpha(opacity=0)
+    }
+
+    #MathJax_ZoomFrame {
+        position: relative;
+        display: inline-block;
+        height: 0;
+        width: 0
+    }
+
+    #MathJax_ZoomEventTrap {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 302;
+        display: inline-block;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        background-color: white;
+        opacity: 0;
+        filter: alpha(opacity=0)
+    }
+    </style>
+    <style type="text/css">.MathJax_Preview {
+        color: #888
+    }
+
+    #MathJax_Message {
+        position: fixed;
+        left: 1em;
+        bottom: 1.5em;
+        background-color: #E6E6E6;
+        border: 1px solid #959595;
+        margin: 0px;
+        padding: 2px 8px;
+        z-index: 102;
+        color: black;
+        font-size: 80%;
+        width: auto;
+        white-space: nowrap
+    }
+
+    #MathJax_MSIE_Frame {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0px;
+        z-index: 101;
+        border: 0px;
+        margin: 0px;
+        padding: 0px
+    }
+
+    .MathJax_Error {
+        color: #CC0000;
+        font-style: italic
+    }
+
+    .MathJax_Display {
+        text-align: center;
+        margin: 0em 5em
+    }
+    </style>
+    <style type="text/css">.MJXp-script {
+        font-size: .8em
+    }
+
+    .MJXp-right {
+        -webkit-transform-origin: right;
+        -moz-transform-origin: right;
+        -ms-transform-origin: right;
+        -o-transform-origin: right;
+        transform-origin: right
+    }
+
+    .MJXp-bold {
+        font-weight: bold
+    }
+
+    .MJXp-italic {
+        font-style: italic
+    }
+
+    .MJXp-scr {
+        font-family: MathJax_Script, 'Times New Roman', Times, STIXGeneral, serif
+    }
+
+    .MJXp-frak {
+        font-family: MathJax_Fraktur, 'Times New Roman', Times, STIXGeneral, serif
+    }
+
+    .MJXp-sf {
+        font-family: MathJax_SansSerif, 'Times New Roman', Times, STIXGeneral, serif
+    }
+
+    .MJXp-cal {
+        font-family: MathJax_Caligraphic, 'Times New Roman', Times, STIXGeneral, serif
+    }
+
+    .MJXp-mono {
+        font-family: MathJax_Typewriter, 'Times New Roman', Times, STIXGeneral, serif
+    }
+
+    .MJXp-largeop {
+        font-size: 150%
+    }
+
+    .MJXp-largeop.MJXp-int {
+        vertical-align: -.2em
+    }
+
+    .MJXp-math {
+        display: inline-block;
+        line-height: 1.2;
+        text-indent: 0;
+        font-family: 'Times New Roman', Times, STIXGeneral, serif;
+        white-space: nowrap;
+        border-collapse: collapse
+    }
+
+    .MJXp-display {
+        display: block;
+        text-align: center;
+        margin: 1em 0
+    }
+
+    .MJXp-math span {
+        display: inline-block
+    }
+
+    .MJXp-box {
+        display: block !important;
+        text-align: center
+    }
+
+    .MJXp-box:after {
+        content: " "
+    }
+
+    .MJXp-rule {
+        display: block !important;
+        margin-top: .1em
+    }
+
+    .MJXp-char {
+        display: block !important
+    }
+
+    .MJXp-mo {
+        margin: 0 .15em
+    }
+
+    .MJXp-mfrac {
+        margin: 0 .125em;
+        vertical-align: .25em
+    }
+
+    .MJXp-denom {
+        display: inline-table !important;
+        width: 100%
+    }
+
+    .MJXp-denom > * {
+        display: table-row !important
+    }
+
+    .MJXp-surd {
+        vertical-align: top
+    }
+
+    .MJXp-surd > * {
+        display: block !important
+    }
+
+    .MJXp-script-box > * {
+        display: table !important;
+        height: 50%
+    }
+
+    .MJXp-script-box > * > * {
+        display: table-cell !important;
+        vertical-align: top
+    }
+
+    .MJXp-script-box > *:last-child > * {
+        vertical-align: bottom
+    }
+
+    .MJXp-script-box > * > * > * {
+        display: block !important
+    }
+
+    .MJXp-mphantom {
+        visibility: hidden
+    }
+
+    .MJXp-munderover {
+        display: inline-table !important
+    }
+
+    .MJXp-over {
+        display: inline-block !important;
+        text-align: center
+    }
+
+    .MJXp-over > * {
+        display: block !important
+    }
+
+    .MJXp-munderover > * {
+        display: table-row !important
+    }
+
+    .MJXp-mtable {
+        vertical-align: .25em;
+        margin: 0 .125em
+    }
+
+    .MJXp-mtable > * {
+        display: inline-table !important;
+        vertical-align: middle
+    }
+
+    .MJXp-mtr {
+        display: table-row !important
+    }
+
+    .MJXp-mtd {
+        display: table-cell !important;
+        text-align: center;
+        padding: .5em 0 0 .5em
+    }
+
+    .MJXp-mtr > .MJXp-mtd:first-child {
+        padding-left: 0
+    }
+
+    .MJXp-mtr:first-child > .MJXp-mtd {
+        padding-top: 0
+    }
+
+    .MJXp-mlabeledtr {
+        display: table-row !important
+    }
+
+    .MJXp-mlabeledtr > .MJXp-mtd:first-child {
+        padding-left: 0
+    }
+
+    .MJXp-mlabeledtr:first-child > .MJXp-mtd {
+        padding-top: 0
+    }
+
+    .MJXp-merror {
+        background-color: #FFFF88;
+        color: #CC0000;
+        border: 1px solid #CC0000;
+        padding: 1px 3px;
+        font-style: normal;
+        font-size: 90%
+    }
+
+    .MJXp-scale0 {
+        -webkit-transform: scaleX(.0);
+        -moz-transform: scaleX(.0);
+        -ms-transform: scaleX(.0);
+        -o-transform: scaleX(.0);
+        transform: scaleX(.0)
+    }
+
+    .MJXp-scale1 {
+        -webkit-transform: scaleX(.1);
+        -moz-transform: scaleX(.1);
+        -ms-transform: scaleX(.1);
+        -o-transform: scaleX(.1);
+        transform: scaleX(.1)
+    }
+
+    .MJXp-scale2 {
+        -webkit-transform: scaleX(.2);
+        -moz-transform: scaleX(.2);
+        -ms-transform: scaleX(.2);
+        -o-transform: scaleX(.2);
+        transform: scaleX(.2)
+    }
+
+    .MJXp-scale3 {
+        -webkit-transform: scaleX(.3);
+        -moz-transform: scaleX(.3);
+        -ms-transform: scaleX(.3);
+        -o-transform: scaleX(.3);
+        transform: scaleX(.3)
+    }
+
+    .MJXp-scale4 {
+        -webkit-transform: scaleX(.4);
+        -moz-transform: scaleX(.4);
+        -ms-transform: scaleX(.4);
+        -o-transform: scaleX(.4);
+        transform: scaleX(.4)
+    }
+
+    .MJXp-scale5 {
+        -webkit-transform: scaleX(.5);
+        -moz-transform: scaleX(.5);
+        -ms-transform: scaleX(.5);
+        -o-transform: scaleX(.5);
+        transform: scaleX(.5)
+    }
+
+    .MJXp-scale6 {
+        -webkit-transform: scaleX(.6);
+        -moz-transform: scaleX(.6);
+        -ms-transform: scaleX(.6);
+        -o-transform: scaleX(.6);
+        transform: scaleX(.6)
+    }
+
+    .MJXp-scale7 {
+        -webkit-transform: scaleX(.7);
+        -moz-transform: scaleX(.7);
+        -ms-transform: scaleX(.7);
+        -o-transform: scaleX(.7);
+        transform: scaleX(.7)
+    }
+
+    .MJXp-scale8 {
+        -webkit-transform: scaleX(.8);
+        -moz-transform: scaleX(.8);
+        -ms-transform: scaleX(.8);
+        -o-transform: scaleX(.8);
+        transform: scaleX(.8)
+    }
+
+    .MJXp-scale9 {
+        -webkit-transform: scaleX(.9);
+        -moz-transform: scaleX(.9);
+        -ms-transform: scaleX(.9);
+        -o-transform: scaleX(.9);
+        transform: scaleX(.9)
+    }
+
+    .MathJax_PHTML .noError {
+        vertical-align: 1px;
+        font-size: 90%;
+        text-align: left;
+        color: black;
+        padding: 1px 3px;
+        border: 1px solid
+    }
+    </style>
+</head>
+<body id="body">
+<div id="MathJax_Message" style="display: none;"></div>
+
+<div id="alllayout" class="app app-aside-fixed app-header-fixed">
+    <script type="text/javascript">
+        $('#alllayout').addClass("app-aside-fixed");
+        $('#alllayout').addClass("app-header-fixed");
+    </script>
+    <!-- header -->
+    <header id="header" class="app-header navbar" role="menu">
+        <!-- navbar header（交集处） -->
+        <div class="navbar-header bg-dark">
+
+            <button class="pull-right visible-xs dk" ui-toggle-class="show" target=".navbar-collapse">
+                <i class="glyphicon glyphicon-cog"></i>
+            </button>
+            <button class="pull-right visible-xs" ui-toggle-class="off-screen" target=".app-aside" ui-scroll="app">
+                <i class="glyphicon glyphicon-align-justify"></i>
+            </button>
+            <!-- brand -->
+            <a href="/" class="navbar-brand text-lt">
+                <i class="iconfont icon-shouyeshouye"></i>
+                <span class="hidden-folded m-l-xs">宁月</span>
+            </a>
+            <!-- / brand -->
         </div>
-<hr>
-    <h2>Comments</h2>
-        {% for comment in comments %}
+        <!-- / navbar header -->
 
-            <div class="well">
-                {{ comment.body |safe }}
-                {% if current_user.id == post.author.id or current_user.is_administrator() %}
-                    <a style="float:right" href='{{ url_for('main.delete',id=comment.id) }}' class="btn btn-warning">Delete</a>
-                {% endif %}
+        <!-- navbar collapse（顶部导航栏） -->
+        <div class="collapse pos-rlt navbar-collapse box-shadow bg-white-only">
+            <!-- buttons -->
+            <div class="nav navbar-nav hidden-xs">
+                <a data-no-instant="" href="/#" class="btn no-shadow navbar-btn"
+                   ui-toggle-class="app-aside-folded" target=".app">
+                    <i style="height: 14px!important" class="iconfont icon-dedent text icon-fw"></i>
+                    <i style="height: 14px!important" class="iconfont icon-indent icon-fw text-active"></i>
+                </a>
+                <a href="/#" class="btn no-shadow navbar-btn" ui-toggle-class="show"
+                   target="#aside-user">
+                    <i style="height: 14px!important" class="iconfont icon-user icon-fw"></i>
+                </a>
             </div>
+            <!-- / buttons -->
 
-        {% endfor %}
-        {{ wtf.quick_form(form) }}
-        <div>
 
-{% endblock %}
+            <!-- search form -->
+            <form method="post" class="navbar-form navbar-form-sm navbar-left shift" role="search">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input id="keyword" type="search" name="s"
+                               class="form-control input-sm bg-light no-border rounded padder" placeholder="输入关键词搜索…"
+                               onkeypress="getKey()">
+                        <span class="input-group-btn">
+                <a id="soux" href="/search/" data-instant="" type="submit"
+                   class="btn btn-sm bg-light rounded"><i class="iconfont icon-search"></i>
+                </a>
+              </span>
+                    </div>
+                </div>
+            </form>
+            <!-- / search form -->
+
+            <!-- 闲言碎语 -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="/#" data-toggle="dropdown" class="dropdown-toggle">
+                        <i style="height: 14px!important" class="iconfont icon-bell icon-fw"></i>
+                        <span class="visible-xs-inline">
+                              闲言碎语
+                            </span>
+                        <span class="badge badge-sm up bg-danger pull-right-xs"></span>
+                    </a>
+                    <!-- dropdown -->
+                    <div class="dropdown-menu w-xl animated fadeInUp">
+                        <div class="panel bg-white">
+                            <div class="panel-heading b-light bg-light">
+                                <strong>
+                                    闲言碎语
+                                </strong>
+                            </div>
+                            <div class="list-group">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / dropdown -->
+                </li>
+                <li class="dropdown">
+                    <a href="/auth/login" onclick="return false" data-toggle="dropdown" class="dropdown-toggle clear">
+                        <span class="text">登录</span>
+                        <b class="caret"></b><!--下三角符号-->
+                    </a>
+
+                </li>
+            </ul>
+            <!-- / 闲言碎语 -->
+        </div>
+        <!-- / navbar collapse -->
+    </header>  <!-- / header -->
+    <!-- aside -->
+
+    <aside id="aside" class="app-aside hidden-xs bg-dark">
+        <div class="aside-wrap">
+            <div class="navi-wrap">
+                <!-- user -->
+                <div class="clearfix hidden-xs text-center hide show" id="aside-user">
+                    <div class="dropdown wrapper">
+                        <a href="/">
+                            <span class="thumb-lg w-auto-folded avatar m-t-sm">
+                  <img src="../static/stony/avatar.jpg" class="img-full">
+                </span>
+                        </a>
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle hidden-folded">
+                <span class="clear">
+                  <span class="block m-t-sm">
+                    <strong class="font-bold text-lt">宁月</strong>
+                    <b class="caret"></b>
+                  </span>
+                  <span class="text-muted text-xs block">“呀呀呀”</span>
+                </span>
+                        </a>
+                        <!-- dropdown -->
+                        <ul class="dropdown-menu animated fadeInRight w hidden-folded">
+                            <li class="wrapper b-b m-b-sm bg-info m-t-n-xs">
+                                <span class="arrow top hidden-folded arrow-info"></span>
+                                <div>
+
+                                    <p>Hello，宁月.</p>
+                                </div>
+                                <div class="progress progress-xs m-b-none dker">
+                                    <div class="progress-bar bg-white" data-toggle="tooltip"
+                                         data-original-title="41.67%" style="width: 41.67%"></div>
+                                </div>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/StonyMoon">
+                                    <i style="position: relative;width: 30px;margin: -11px -10px;margin-right: 0px;overflow: hidden;line-height: 30px;text-align: center;"
+                                       class="iconfont icon-rss"></i><span>Github</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="/#"><i
+                                        style="position: relative;width: 30px;margin: -11px -10px;margin-right: 0px;overflow: hidden;line-height: 30px;text-align: center;"
+                                        class="iconfont icon-rss1"></i><span>Gmail</span></a>
+                            </li>
+
+                            <li class="divider"></li>
+                            <li>
+                                <a data-no-instant="" href="/auth/login">登录</a>
+                            </li>
+                        </ul>
+                        <!-- / dropdown -->
+                    </div>
+                    <div class="line dk hidden-folded"></div>
+                </div>
+                <!-- / user -->
+
+                <!-- nav -->
+                <nav ui-nav="" class="navi clearfix">
+                    <ul class="nav">
+                        <!--index-->
+                        <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                            <span>导航</span>
+                        </li>
+                        <!--主页-->
+                        <li>
+                            <a href="/" class="auto">
+                                <i class="iconfont icon-home icon text-md"></i>
+                                <span>首页</span>
+                            </a>
+                        </li>
+                        <!-- /主页 -->
+                        <!--lucky try-->
+
+                        <!-- /lucky try-->
+                        <li class="line dk"></li>
+                        <!--Components-->
+                        <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                            <span>组成</span>
+                        </li>
+                        <!--分类category-->
+                        <li>
+                            <a data-no-instant="" class="auto">
+                  <span class="pull-right text-muted">
+                    <i class="iconfont icon-fw icon-angleright text"></i>
+                    <i class="iconfont icon-fw icon-angledown text-active"></i>
+                  </span>
+                                <i class="iconfont icon-c-classification"></i>
+                                <span>分类</span>
+                            </a>
+                            <ul class="nav nav-sub dk">
+                                <li class="nav-sub-header">
+                                    <a data-no-instant="">
+                                        <span>分类</span>
+                                    </a>
+                                </li><!--不会显示出来-->
+                                <!--循环输出分类-->
+
+                                <li><a href="/type/%E9%9A%8F%E7%AC%94"><span>随笔</span></a></li>
+                                <li><a href="/type/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span>读书笔记</span></a></li>
+                                <li><a href="/type/%E7%BF%BB%E8%AF%91"><span>翻译</span></a></li>
+                            </ul>
+                        </li>
+                        <!--独立页面pages-->
+                        <li>
+                            <a data-no-instant="" class="auto">
+                  <span class="pull-right text-muted">
+                    <i class="iconfont icon-fw icon-angleright text"></i>
+                    <i class="iconfont icon-fw icon-angledown text-active"></i>
+                  </span>
+                                <i class="iconfont icon-176pages"></i>
+                                <span>页面</span>
+                            </a>
+                            <ul class="nav nav-sub dk">
+                                <li class="nav-sub-header">
+                                    <a data-no-instant="">
+                                        <span>页面</span>
+                                    </a>
+                                </li><!--这个字段不会被显示出来-->
+                                <!--循环输出独立页面-->
+                                <li><a href="/"><span>分类</span></a></li>
+
+                            </ul>
+                        </li>
+
+
+                    </ul>
+                </nav>
+                <!-- nav -->
+
+
+            </div>
+        </div>
+    </aside>
+    <!-- / aside -->
+
+    <!-- content -->
+    <div id="content" class="app-content">
+        <div class="butterbar hide">
+            <span class="bar"></span>
+        </div>
+        <a class="off-screen-toggle hide"></a>
+        <main class="app-content-body">
+            <div class="hbox hbox-auto-xs hbox-auto-sm">
+                <div class="col">
+                    <!--标题下的一排功能信息图标：作者/时间/浏览次数/评论数/分类-->
+                    <header class="bg-light lter b-b wrapper-md">
+                        <h1 class="entry-title m-n font-thin h3 text-black l-h">{{ post.title }} </h1>
+                        <!--文章标题下面的小部件-->
+                        <ul class="entry-meta text-muted list-inline m-b-none small">
+                            <!--作者-->
+                            <li class="meta-author"><i class="iconfont icon-user1" aria-hidden="true"></i> <span
+                                    class="sr-only">作者：</span> <a class="meta-value" href="/#"
+                                                                  rel="author"> {{ post.author.name }}</a></li>
+                            <!--发布时间-->
+                            <li class="meta-date"><i class="iconfont icon-clocko" aria-hidden="true"></i> <span
+                                    class="sr-only">发布时间：</span>
+                                <time class="meta-value">{{ post.timestamp }}</time>
+                            </li>
+                            <!--浏览数-->
+                            <li class="meta-views"><i class="iconfont icon-eye" aria-hidden="true"></i> <span
+                                    class="meta-value">674次浏览</span></li>
+
+                            <!--分类-->
+                            <li class="meta-categories"><i class="iconfont icon-tags" aria-hidden="true"></i> <span
+                                    class="sr-only">分类：</span> <span class="meta-value"><a href="/#">{{ post.type }}</a></span>
+                            </li>
+                        </ul>
+                    </header>
+                    <div class="wrapper-md">
+                        <ol class="breadcrumb bg-white b-a" itemscope="" itemtype="http://schema.org/WebPage">
+                            <li><a href="/" itemprop="breadcrumb" data-toggle="tooltip" data-placement="top" title=""
+                                   data-original-title="返回首页"><i class="iconfont icon-home" aria-hidden="true"></i>
+                                首页</a></li>
+                            <li><a href="{{ '/type/'+post.type }}">{{ post.type }}</a></li>
+                            <li class="active">正文</li>
+                        </ol>
+                        <!--博客文章样式 begin with .blog-post-->
+                        <div id="postpage" class="blog-post">
+                            <article class="panel">
+                                <!--文章页面的头图-->
+                                <!--文章内容-->
+                                {% if current_user.id ==  post.author.id or current_user.is_administrator() %}
+                                    <a style="float:right" href='{{ url_for('main.edit',id=post.id) }}'
+                                       class="btn btn-success">Edit</a>
+                                {% endif %}
+
+                                <div id="post-content" class="wrapper-lg">
+                                    <div class="entry-content l-h-2x">
+
+
+                                        {% if post.body_html %}
+                                            {{ post.body_html |safe }}
+                                        {% else %}
+                                            {{ post.body |safe }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+
+                        <!--评论-->
+
+
+                        <div id="comments">
+                            {% for comment in comments %}
+
+                                <div class="well">
+                                    {{ comment.body |safe }}
+                                    {% if current_user.id == post.author.id or current_user.is_administrator() %}
+                                        <a style="float:right" href='{{ url_for('main.delete',id=comment.id) }}'
+                                           class="btn btn-warning">Delete</a>
+                                    {% endif %}
+                                </div>
+
+                            {% endfor %}
+                            {{ wtf.quick_form(form) }}
+                            <nav class="text-center m-t-lg m-b-lg" role="navigation">
+                            </nav>
+                            <script>
+                                //给分页按钮增加样式
+                                $(".page-navigator").addClass("pagination pagination-md");
+                                $("#comments .page-navigator").addClass("pagination-sm");
+                                $(".page-navigator .current").addClass("active");
+                                $("#comments .comment-list").addClass("list-unstyled m-b-none");
+                            </script>
+                            <!--如果允许评论，会出现评论框和个人信息的填写-->
+                        </div>
+                    </div>
+                </div>
+                <!--首页右侧栏-->
+
+                <aside class="col w-md bg-white-only b-l bg-auto no-border-xs" role="complementary">
+                    <div id="sidebar">
+
+                        <!--循环输出分类列表-->
+                        <section id="categories-2" class="widget widget_categories wrapper-md clear">
+                            <h3 class="widget-title m-t-none text-md">分类</h3>
+                            <ul class="list-group">
+                                <li class="list-group-item"><a href="/type/%E9%9A%8F%E7%AC%94"> <span
+                                        class="badge pull-right">7</span>随笔</a></li>
+                                <li class="list-group-item"><a href="/type/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"> <span
+                                        class="badge pull-right">7</span>读书笔记</a></li>
+                                <li class="list-group-item"><a href="/type/%E7%BF%BB%E8%AF%91"> <span
+                                        class="badge pull-right">7</span>翻译</a></li>
+                            </ul>
+                        </section>
+                        <!--在文章页面输出目录，在其他页面输出标签云-->
+                        <section id="tag_cloud-2" class="widget widget_tag_cloud wrapper-md clear">
+                            <h3 class="widget-title m-t-none text-md">标签云</h3>
+                            <div class="tags l-h-2x">
+                                <a href="/#" class="label bg-info" title=""
+                                   data-toggle="tooltip" data-original-title="python">待完善</a>
+                            </div>
+                        </section>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+    <!-- /content -->
+
+
+</div><!--end of .app app-header-fixed-->
+
+<script type="text/x-mathjax-config;executed=true">
+                  MathJax.Hub.Config({
+                      styles: {
+                          ".MathJax_Display": {
+                              "text-align": "center",
+                              margin: "0em 5em"
+                          }
+                      },
+                      tex2jax: {
+                          inlineMath: [["$","$"]],
+                          displayMath: [ ['$$','$$'] ],
+                          skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+                          processRefs: true
+                      },
+                      TeX: {
+                          extensions: ["autoload-all.js"],
+                          equationNumbers: {
+                              autoNumber: "AMS",
+                              useLabelIds: false
+                          }
+                      }
+                  });
+
+
+
+
+
+
+</script>
+<script type="text/javascript" src="../static/stony/MathJax.js"></script>
+<!--develope本地版本-->
+<!--<script data-no-instant src=""></script>
+<script data-no-instant src=""></script>
+<script data-no-instant src=""></script>
+<script src=""></script>-->
+
+<!--CDN加载-->
+<script src="../static/stony/bootstrap.min.js" data-no-instant=""></script>
+<script data-no-instant="" src="../static/stony/instantclick.min.js"></script>
+<script src="../static/stony/highlight.min.js"></script>
+
+
+<script data-no-instant="" type="text/javascript">
+    //自定义js输出位置
+    InstantClick.on('change', function (isInitialLoad) {
+        if (isInitialLoad === false) {
+            if (typeof MathJax !== 'undefined') {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            } // support MathJax
+            if (typeof _hmt !== 'undefined')  // support 百度统计
+                _hmt.push(['_trackPageview', location.pathname + location.search]);
+            if (typeof ga !== 'undefined')  // support google analytics
+                ga('send', 'pageview', location.pathname + location.search);
+            if (typeof DUOSHUO !== 'undefined') //多说
+                DUOSHUO.EmbedThread('.ds-thread');
+        }
+        $('pre code').each(function (i, block) {
+            hljs.highlightBlock(block);
+        });
+        //instantclick 回调函数输出位置
+    });
+    InstantClick.init('70');
+</script>
+
+
+<!-- 压缩后版本 -->
+<script data-no-instant="" src="../static/stony/main.min.js"></script>
+<script src="../static/stony/script.min.js"></script>
+
+
+<!--页面布局header-fix-->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#comments a[href^=#][href!=#]').click(function () {
+            var target = document.getElementById(this.hash.slice(1));
+            if (!target) return;
+            var targetOffset = $(target).offset().top - 50;
+            $('html,body').animate({
+                        scrollTop: targetOffset
+                    },
+                    300);
+            return false;
+        });//主要修复评论定位不准确BUG
+        if (window.location.hash.indexOf('#') >= 0) {
+            setTimeout(function () {
+                $('html,body').animate({scrollTop: ($(window.location.hash).offset().top - 50) + "px"}, 300);
+            }, 700);
+        }//主要修复评论定位不准确BUG
+    });
+</script>
+<!--页页面布局header-fix结束-->
+
+<!--comments.php 页面必需js-->
+<!--comments.php 必需js结束-->
+
+<!--lightgallery必备组件-->
+<script src="../static/stony/lightgallery.min.js"></script>
+<script src="../static/stony/jquery.mousewheel.min.js"></script>
+<script src="../static/stony/lg-zoom.min.js"></script>
+
+<!--代码高亮插件启动-->
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<!--图片延迟加载开始-->
+<!--图片延迟加载结束-->
+
+<!--音乐播放器开始。by qqdie 修改自youduBGM插件-->
+<!--音乐播放器结束-->
+
+
+<!-- / footer -->
+</body><!--#body end--></html>
