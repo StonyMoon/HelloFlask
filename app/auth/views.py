@@ -61,6 +61,7 @@ def logout():
 
 @auth.route('/register', methods=['POST', 'GET'])
 def register():
+    return '<h1>Temporarily unable to register</h1>'
     db.create_all()
     form = RegisterForm()
     if form.is_submitted():

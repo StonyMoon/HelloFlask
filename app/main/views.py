@@ -10,13 +10,6 @@ from flask_login import login_required, current_user
 from ..models import User, Post, Permission, Comment,TodoList
 
 
-@main.route('/database')
-def create_database():
-    db.drop_all()
-    db.create_all()
-    models.Role.insert_role()
-    # Post.generate_fake(50)
-
 @main.route('/index', methods=['POST', 'GET'])
 def send_mail(to, title, mes):
     msg = Message(title, sender='934998206@qq.com', recipients=[to])
@@ -60,7 +53,7 @@ def hello_world():
     # 拿到一页内容
     todo = TodoList.query.order_by(TodoList.id.asc()).all()
     posts = pagination.items
-    return render_template('aa.html', form=form, posts=posts, pagination=pagination,todo=todo)
+    return render_template('blog.html', form=form, posts=posts, pagination=pagination, todo=todo)
 
 
 @main.route('/mail', methods=['POST', 'GET'])
@@ -109,7 +102,6 @@ def edit_profile():
 
 
 @main.route('/post/<int:id>', methods=['GET', 'POST'])
-@login_required
 def post(id):
     form = CommentForm()
     post = Post.query.get_or_404(id)

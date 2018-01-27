@@ -118,6 +118,9 @@ class AnonymousUser(AnonymousUserMixin):
     def is_administrator(self):
         return False
 
+
+login_manager.anonymous_user = AnonymousUser
+
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
@@ -140,7 +143,7 @@ class Post(db.Model):
     def on_change_body(target,value,oldvalue,initiator):
         # allowed_tags = ['a','abbr','acronym','b','blockquote','code','em','i','li','ol','pre','strong'
         #                 ,'ul','h1','h2','h3','p','img']
-        target.body_html = markdown(value,output_format='html',extensions=[GithubFlavoredMarkdownExtension(),'markdown.extensions.codehilite'])
+        target.body_html = markdown(value, output_format='html', extensions=[GithubFlavoredMarkdownExtension()])
 db.event.listen(Post.body,'set',Post.on_change_body)
 
 

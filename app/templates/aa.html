@@ -29,8 +29,9 @@
                     <a style=" text-decoration: none; color: inherit;" href='{{ url_for("main.post",id=post.id) }}'>
                         {{ post.title }}
                     </a>
+
                 </h3>
-                <div style="float:right" class="panel-body">
+                <div style="float:right">
                     <img src="{{ url_for('static',filename='clock.png') }} " width="18" height="18"/>
                     {{ post.timestamp }}
                     <br/>
@@ -54,7 +55,7 @@
                 <li><a href='{{ url_for('main.hello_world',page= pagination.prev_num) }}'>&laquo;</a></li>
             {% endif %}
             {% for i in range(pagination.pages) %}
-                <li><a href="{{ url_for('main.hello_world',page=i+1 )}}"> {{ i+1 }} </a></li>
+                <li><a href="{{ url_for('main.hello_world',page=i+1 )}}">{{ i+1 }}</a></li>
             {% endfor %}
             {% if pagination.page== pagination.pages %}
 
