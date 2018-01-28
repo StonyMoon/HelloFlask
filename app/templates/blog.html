@@ -1,3 +1,4 @@
+{% import "bootstrap/wtf.html" as wtf %}
 <!DOCTYPE html>
 
 <html class="no-js" lang="zh-cmn-Hans">
@@ -838,8 +839,16 @@
                     <!-- / dropdown -->
                 </li>
                 <li class="dropdown">
-                    <a href="/auth/login" onclick="return false" data-toggle="dropdown" class="dropdown-toggle clear">
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('auth.logout') }}" onclick="return false" data-toggle="dropdown"
+                           class="dropdown-toggle clear">
+                        <span class="text">退出</span>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" onclick="return false" data-toggle="dropdown"
+                           class="dropdown-toggle clear">
                         <span class="text">登录</span>
+                    {% endif %}
+
                         <b class="caret"></b><!--下三角符号-->
                     </a>
 
@@ -1027,7 +1036,7 @@
                                 </div>
 
                             {% endfor %}
-
+                            {{ wtf.quick_form(form) }}
                         </div>
 
 

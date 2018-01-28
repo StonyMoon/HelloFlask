@@ -147,7 +147,7 @@ def select(type):
                                                                                           error_out=False)
     # 拿到一页内容
     posts = pagination.items
-    return render_template('aa.html', form=form, posts=posts, pagination=pagination)
+    return render_template('blog.html', form=form, posts=posts, pagination=pagination)
 
 
 
@@ -159,4 +159,4 @@ def search(word):
                                                                                           error_out=False)
     # 拿到一页内容
     posts = pagination.items
-    return render_template('aa.html', form=form, posts=posts, pagination=pagination)
+    return render_template('blog.html', form=form, posts=posts, pagination=pagination)
