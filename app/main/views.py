@@ -112,7 +112,8 @@ def post(id):
         db.session.add(comment)
         db.session.commit()
         return redirect(url_for('main.post', id=id))
-    return render_template('post.html', post=post, form=form, comments=comments)
+    types = get_types()
+    return render_template('post.html', post=post, form=form, comments=comments, types=types)
 
 
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])
