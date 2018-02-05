@@ -14,10 +14,10 @@ class mail_form(Form):
     submit = SubmitField('Submit')
 
 class PostForm(Form):
-    choice = [('随笔', '随笔'), ('读书笔记', '读书笔记'), ('翻译', '翻译')]
+
     title = StringField('title',validators=[InputRequired()])
     body = PageDownField('What \'s your mind?',validators=[DataRequired])
-    post_type = SelectField('type',choices=choice)
+    post_type = StringField('tag', validators=[InputRequired()])
     submit = SubmitField('Submit')
 
 class EditProfileForm(Form):

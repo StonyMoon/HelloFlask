@@ -132,6 +132,7 @@ def edit(id):
         return redirect(url_for('main.hello_world'))
     form.body.data = post.body
     form.title.data = post.title
+    form.post_type.data = post.type
     return render_template('edit.html', post=post, form=form)
 
 
