@@ -1,5 +1,4 @@
 #coding:utf8
-import time
 from . import main
 from flask import Flask, redirect, make_response, request, abort, render_template, url_for, session, flash
 from .forms import PostForm, mail_form, EditProfileForm, CommentForm,TodoForm
@@ -53,7 +52,9 @@ def hello_world():
     # 拿到一页内容
     todo = TodoList.query.order_by(TodoList.id.asc()).all()
     posts = pagination.items
-    return render_template('blog.html', form=form, posts=posts, pagination=pagination, todo=todo)
+    types = get_types()
+
+    return render_template('blog.html', form=form, posts=posts, pagination=pagination, todo=todo, types=types)
 
 
 @main.route('/mail', methods=['POST', 'GET'])
@@ -147,7 +148,8 @@ def select(type):
                                                                                           error_out=False)
     # 拿到一页内容
     posts = pagination.items
-    return render_template('blog.html', form=form, posts=posts, pagination=pagination)
+    types = get_types()
+    return render_template('blog.html', form=form, posts=posts, pagination=pagination, types=types)
 
 
 
@@ -159,4 +161,16 @@ def search(word):
                                                                                           error_out=False)
     # 拿到一页内容
     posts = pagination.items
-    return render_template('blog.html', form=form, posts=posts, pagination=pagination)
+    types = get_types()
+    return render_template('blog.html', form=form, posts=posts, pagination=pagination, types=types)
+
+
+def get_types():
+    types = db.session.query(Post.type).all()
+    tp = {}
+    for each in types:
+        if tp.get(each[0]) is None:
+            tp[each[0]] = 1
+        else:
+            tp[each[0]] += 1
+    return tp

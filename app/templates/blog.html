@@ -306,10 +306,9 @@
                                     </a>
                                 </li><!--不会显示出来-->
                                 <!--循环输出分类-->
-
-                                <li><a href="/type/%E9%9A%8F%E7%AC%94"><span>随笔</span></a></li>
-                                <li><a href="/type/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span>读书笔记</span></a></li>
-                                <li><a href="/type/%E7%BF%BB%E8%AF%91"><span>翻译</span></a></li>
+                                {% for tp in types.keys() %}
+                                    <li><a href={{ "/type/"+tp }}><span>{{ tp }}</span></a></li>
+                                {% endfor %}
                             </ul>
                         </li>
                         <!--独立页面pages-->
@@ -426,12 +425,11 @@
                         <section id="categories-2" class="widget widget_categories wrapper-md clear">
                             <h3 class="widget-title m-t-none text-md">分类</h3>
                             <ul class="list-group">
-                                <li class="list-group-item"><a href="/type/%E9%9A%8F%E7%AC%94"> <span
-                                        class="badge pull-right">7</span>随笔</a></li>
-                                <li class="list-group-item"><a href="/type/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"> <span
-                                        class="badge pull-right">7</span>读书笔记</a></li>
-                                <li class="list-group-item"><a href="/type/%E7%BF%BB%E8%AF%91"> <span
-                                        class="badge pull-right">7</span>翻译</a></li>
+                                {% for tp in types.keys() %}
+                                    <li class="list-group-item"><a href={{ "/type/"+tp }}> <span
+                                            class="badge pull-right">{{ types[tp] }}</span>{{ tp }}</a></li>
+                                {% endfor %}
+
                             </ul>
                         </section>
                         <!--在文章页面输出目录，在其他页面输出标签云-->
