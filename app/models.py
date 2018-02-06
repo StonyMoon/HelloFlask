@@ -74,7 +74,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(128))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))  # what it is?TODO
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
 

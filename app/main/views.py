@@ -7,7 +7,7 @@ from flask_mail import Message
 from ..decorators import admin_required
 from flask_login import login_required, current_user
 from ..models import User, Post, Permission, Comment,TodoList
-
+import datetime
 
 @main.route('/index', methods=['POST', 'GET'])
 def send_mail(to, title, mes):
@@ -43,7 +43,8 @@ def hello_world():
 
     form = PostForm()
     if form.is_submitted() and current_user.can(Permission.WRITE_ARTICLES):
-        post = Post(body=form.body.data, author_id=current_user.id, title=form.title.data, type=form.post_type.data)
+        post = Post(body=form.body.data, author_id=current_user.id, title=form.title.data, type=form.post_type.data,
+                    timestamp=datetime.datetime.now())
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('main.hello_world'))
