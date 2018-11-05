@@ -131,6 +131,7 @@ class Post(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # 相当于在post里有一个.user可以直接拿到User
     body_html = db.Column(db.Text)
     comments = db.relationship('Comment', backref='comments', lazy='dynamic')
+    visible = db.Column(db.SmallInteger)
 
     @staticmethod
     def generate_fake(num):

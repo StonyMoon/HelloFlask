@@ -363,6 +363,7 @@
 
 
                             {% for post in posts %}
+                                {% if current_user.is_administrator() or post.visible == 1 %}
                                 <div class="panel">
                                     <!--首页文章页面头图-->
                                     <!--首页文章内容-->
@@ -384,7 +385,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                {% endif %}
                             {% endfor %}
                             {{ wtf.quick_form(form) }}
                         </div>
@@ -524,13 +525,4 @@
 <!--代码高亮插件启动-->
 <script>hljs.initHighlightingOnLoad();</script>
 
-
-<!--图片延迟加载开始-->
-<!--图片延迟加载结束-->
-
-<!--音乐播放器开始。by qqdie 修改自youduBGM插件-->
-<!--音乐播放器结束-->
-
-
-<!-- / footer -->
 </body><!--#body end--></html>

@@ -1,7 +1,7 @@
 #coding:utf8
 class Config():
     SECRET_KEY = 'ZXNMCBZXMNCBMNZXB'
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@127.0.0.1/test'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@127.0.0.1/blog'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     MAIL_SERVER = 'smtp.qq.com'
     MAIN_PORT = 587
