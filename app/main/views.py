@@ -49,7 +49,11 @@ def hello_world():
         db.session.commit()
         return redirect(url_for('main.hello_world'))
     # 分页
-    pagination = Post.query.order_by(Post.id.desc()).paginate(page, per_page=10, error_out=False)
+    if current_user.is_administrator():
+        pagination = Post.query.order_by(Post.id.desc()).paginate(page, per_page=10, error_out=False)
+    else:
+        pagination = Post.query.filter(Post.visible == 1).order_by(Post.id.desc()).paginate(page, per_page=10,
+                                                                                            error_out=False)
     # 拿到一页内容
     todo = TodoList.query.order_by(TodoList.id.asc()).all()
     posts = pagination.items
@@ -76,9 +80,6 @@ def delete(id):
     db.session.delete(Comment.query.get_or_404(id))
     db.session.commit()
     return
-
-
-
 
 
 @main.route('/<username>')
@@ -147,8 +148,13 @@ def select(type):
         db.session.commit()
         return redirect('http://127.0.0.1:5000/')
     # 分页
-    pagination = Post.query.filter_by(type=type).order_by(Post.id.desc()).paginate(page, per_page=10,
+    if current_user.is_administrator():
+        pagination = Post.query.filter_by(type=type).order_by(Post.id.desc()).paginate(page, per_page=10,
                                                                                           error_out=False)
+    else:
+        pagination = Post.query.filter_by(type=type).filter(Post.visible == 1).order_by(Post.id.desc()).paginate(page,
+                                                                                                                 per_page=10,
+                                                                                                                 error_out=False)
     # 拿到一页内容
     posts = pagination.items
     types = get_types()
@@ -160,8 +166,16 @@ def select(type):
 def search(word):
     page = request.args.get('page', 1, type=int)  # 无参数则默认为1,type作用:参数无法转为int时则默认为1
     form = PostForm()
-    pagination = Post.query.filter(Post.title.like('%'+word+'%')).order_by(Post.id.desc()).paginate(page, per_page=10,
-                                                                                          error_out=False)
+    if current_user.is_administrator():
+        pagination = Post.query.filter(Post.title.like('%' + word + '%')).order_by(Post.id.desc()).paginate(page,
+                                                                                                            per_page=10,
+                                                                                                            error_out=False)
+    else:
+        pagination = Post.query.filter(Post.title.like('%' + word + '%')).filter(Post.visible == 1).order_by(
+            Post.id.desc()).paginate(page,
+                                     per_page=10,
+                                     error_out=False)
+
     # 拿到一页内容
     posts = pagination.items
     types = get_types()
