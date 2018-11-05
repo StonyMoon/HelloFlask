@@ -183,7 +183,10 @@ def search(word):
 
 
 def get_types():
-    types = db.session.query(Post.type).all()
+    if current_user.is_administrator():
+        types = db.session.query(Post.type).all()
+    else:
+        types = db.session.query(Post.type).filter(Post.visible == 1).all()
     tp = {}
     for each in types:
         if tp.get(each[0]) is None:
